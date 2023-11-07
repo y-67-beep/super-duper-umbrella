@@ -1,0 +1,45 @@
+name: Restart and Data Persistence
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */5 * * *"
+
+jobs:
+  restart:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Restore saved data
+        run: |
+          if [ -f data.txt ]; then
+            echo "Restoring saved data"
+            data=$(cat data.txt)
+          else
+            echo "No saved data found"
+          fi
+
+      - name: Create data.txt file
+        run: |
+          echo "بيانات محفوظة" > data.txt
+
+      - name: Run project restart script
+        run: |
+          if [ -n "$data" ]; then
+            echo "Running commands with saved data: $data"
+            # استخدم البيانات في الأوامر اللاحقة
+            # احل مكان هذا التعليق بالأوامر الفعلية لإعادة تشغيل المشروع
+          fi
+
+          sleep 10s
+
+          echo "$data" > data.txt
+
+          # احل مكان هذا التعليق بالأوامر الفعلية لإعادة التشغيل التلقائي
+
+      - name: Run index.js script
+        run: |
+          node index.js
